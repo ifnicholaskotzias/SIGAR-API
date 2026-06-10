@@ -40,7 +40,9 @@ abstract class BaseRepository {
 
     public function remove(int|string $id): ?Model {
         $row = $this->getModel()->findOrFail($id);
-        return $row->delete();
+        $row->delete();
+
+        return $row;
     }
 
     public function audit(int|string $id) {
