@@ -22,7 +22,7 @@ class AnimalRequest extends FormRequest
             'peso_atual' => ['nullable','numeric','min:0'],
             'alergia' => ['nullable','string'],
             'status' => ['required', 'in:RESGATADO,ADOTADO,OBITO'],
-            'foto_path' => ['nullable','string'],
+            'foto_path' => ['nullable','image','mimes:jpeg,png,jpg','max:2048'],
             'observacoes_gerais' => ['nullable','string']
         ];
     }

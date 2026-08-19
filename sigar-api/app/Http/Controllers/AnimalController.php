@@ -15,9 +15,10 @@ class AnimalController extends Controller
     public function index(): JsonResponse
     {
         return response()->json(
-            $this->service->all()
+            $this->service->all(
+            )
         );
-    }
+    }   
 
     public function show(int $id): JsonResponse
     {
@@ -26,28 +27,31 @@ class AnimalController extends Controller
         );
     }
 
-    public function store(
-        AnimalRequest $request
-    ): JsonResponse
+    public function store(AnimalRequest $request): JsonResponse
     {
+        $data = $request->validated();
+
+        if ($request->hasFile('foto_path')) {
+            $caminho = $request->file('foto_path')->store('animais', 'public');
+            $data['foto_path'] = $caminho; 
+        }
+
         return response()->json(
-            $this->service->store(
-                $request->validated()
-            ),
+            $this->service->store($data),
             201
         );
     }
 
-    public function update(
-        AnimalRequest $request,
-        int $id
-    ): JsonResponse
+    public function update(AnimalRequest $request, int $id): JsonResponse
     {
+        $data = $request->validated();
+
+        if ($request->hasFile('foto_path')) {
+            $data['foto_path'] = $request->file('foto_path')->store('animais', 'public');
+        }
+
         return response()->json(
-            $this->service->update(
-                $request->validated(),
-                $id
-            )
+            $this->service->update($data, $id)
         );
     }
 
